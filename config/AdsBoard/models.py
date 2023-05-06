@@ -1,3 +1,88 @@
 from django.db import models
+from django.contrib.auth.models import User
 
-# Create your models here.
+
+CATEGORIES = [
+    ('TK', 'Tank'),
+    ('HL', 'Healer'),
+    ('DD', 'Damage dealer'),
+    ('TR', 'Trader'),
+    ('GM', 'Guild master'),
+    ('QG', 'Quest giver'),
+    ('WS', 'Warsmith'),
+    ('TN', 'Tanner'),
+    ('PM', 'Potion maker'),
+    ('SM', 'Spell master'),
+]
+
+
+class AuthorUser(User):
+    pass
+
+
+class Adv(models.Model):
+    """Advertising representation class."""
+
+    date_of_creation = models.DateTimeField(
+        auto_now_add=True,
+    )
+
+    author = models.ForeignKey(
+        to='AuthorUser',
+        on_delete=models.CASCADE,
+    )
+
+    title = models.CharField(
+        max_length=255,
+    )
+
+    category = models.CharField(
+        max_length=2,
+        choices=CATEGORIES,
+        default=None,
+    )
+
+    # content = ?
+
+    replies = models.ForeignKey(
+        to='Reply',
+        on_delete=models.CASCADE,
+    )
+
+    class Meta:
+        verbose_name = 'Advertise'
+        verbose_name_plural = 'Advertisements'
+
+    def __str__(self) -> str:
+        return f'{self.title} by {self.author}'
+
+
+class Reply(models.Model):
+    """Replies class for out advertisements."""
+
+    date_of_creation = models.DateTimeField(
+        auto_now_add=True,
+    )
+
+    author = models.ForeignKey(
+        to='AuthorUser',
+        on_delete=models.CASCADE,
+    )
+
+    adv = models.ForeignKey(
+        to='Adv',
+        on_delete=models.CASCADE,
+    )
+
+    text = models.TextField()
+
+    approved = models.BooleanField(
+        default=False,
+    )
+
+    class Meta:
+        verbose_name = 'Reply'
+        verbose_name_plural = 'Replies'
+
+    def __str__(self) -> str:
+        return f'Reply #{self.id} by {self.author} to {self.adv}'
