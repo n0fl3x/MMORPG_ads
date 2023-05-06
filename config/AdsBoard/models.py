@@ -1,5 +1,4 @@
 from django.db import models
-from django.contrib.auth.models import User
 
 
 CATEGORIES = [
@@ -16,10 +15,6 @@ CATEGORIES = [
 ]
 
 
-class AuthorUser(User):
-    pass
-
-
 class Adv(models.Model):
     """Advertising representation class."""
 
@@ -28,7 +23,7 @@ class Adv(models.Model):
     )
 
     author = models.ForeignKey(
-        to='AuthorUser',
+        to='User',
         on_delete=models.CASCADE,
     )
 
@@ -58,14 +53,14 @@ class Adv(models.Model):
 
 
 class Reply(models.Model):
-    """Replies class for out advertisements."""
+    """Replies class for our advertisements."""
 
     date_of_creation = models.DateTimeField(
         auto_now_add=True,
     )
 
     author = models.ForeignKey(
-        to='AuthorUser',
+        to='User',
         on_delete=models.CASCADE,
     )
 
@@ -86,3 +81,7 @@ class Reply(models.Model):
 
     def __str__(self) -> str:
         return f'Reply #{self.id} by {self.author} to {self.adv}'
+
+    def approve(self) -> None:
+        self.approved = True
+        self.save()
