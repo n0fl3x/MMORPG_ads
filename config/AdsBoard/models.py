@@ -25,10 +25,12 @@ class Adv(models.Model):
     author = models.ForeignKey(
         to='User',
         on_delete=models.CASCADE,
+        related_name='adv_created_by',
     )
 
     title = models.CharField(
         max_length=255,
+        help_text='Up to 255 symbols',
     )
 
     category = models.CharField(
@@ -37,12 +39,7 @@ class Adv(models.Model):
         default=None,
     )
 
-    # content = ?
-
-    replies = models.ForeignKey(
-        to='Reply',
-        on_delete=models.CASCADE,
-    )
+    content = models.TextField()
 
     class Meta:
         verbose_name = 'Advertise'
@@ -50,6 +47,9 @@ class Adv(models.Model):
 
     def __str__(self) -> str:
         return f'{self.title} by {self.author}'
+
+    def get_adv_url(self) -> str:
+        return f'ads/{self.id}/'
 
 
 class Reply(models.Model):
@@ -62,11 +62,13 @@ class Reply(models.Model):
     author = models.ForeignKey(
         to='User',
         on_delete=models.CASCADE,
+        related_name='reply_created_by',
     )
 
     adv = models.ForeignKey(
         to='Adv',
         on_delete=models.CASCADE,
+        related_name='replies_to_adv',
     )
 
     text = models.TextField()
@@ -82,6 +84,6 @@ class Reply(models.Model):
     def __str__(self) -> str:
         return f'Reply #{self.id} by {self.author} to {self.adv}'
 
-    def approve(self) -> None:
+    def is_approved(self) -> None:
         self.approved = True
         self.save()
