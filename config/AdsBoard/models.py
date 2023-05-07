@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.db import models
 
 
@@ -23,7 +24,7 @@ class Adv(models.Model):
     )
 
     author = models.ForeignKey(
-        to='User',
+        to=User,
         on_delete=models.CASCADE,
         related_name='adv_created_by',
     )
@@ -46,7 +47,7 @@ class Adv(models.Model):
         verbose_name_plural = 'Advertisements'
 
     def __str__(self) -> str:
-        return f'{self.title} by {self.author}'
+        return f'{self.title}'
 
     def get_adv_url(self) -> str:
         return f'ads/{self.id}/'
@@ -60,13 +61,13 @@ class Reply(models.Model):
     )
 
     author = models.ForeignKey(
-        to='User',
+        to=User,
         on_delete=models.CASCADE,
         related_name='reply_created_by',
     )
 
     adv = models.ForeignKey(
-        to='Adv',
+        to=Adv,
         on_delete=models.CASCADE,
         related_name='replies_to_adv',
     )
@@ -82,7 +83,7 @@ class Reply(models.Model):
         verbose_name_plural = 'Replies'
 
     def __str__(self) -> str:
-        return f'Reply #{self.id} by {self.author} to {self.adv}'
+        return f'Reply #{self.id}'
 
     def is_approved(self) -> None:
         self.approved = True

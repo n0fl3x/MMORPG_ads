@@ -1,3 +1,7 @@
 from django.contrib import admin
 
-# Register your models here.
+from .models import Adv, Reply
+
+
+admin.site.register(Adv)
+admin.site.register(Reply)
