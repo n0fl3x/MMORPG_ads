@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
+from ckeditor.fields import RichTextField
 
 
 CATEGORIES = [
@@ -40,7 +41,7 @@ class Adv(models.Model):
         default=None,
     )
 
-    content = models.TextField()
+    content = RichTextField()
 
     class Meta:
         verbose_name = 'Advertise'
