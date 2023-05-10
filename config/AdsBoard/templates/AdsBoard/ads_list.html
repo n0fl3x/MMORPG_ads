@@ -10,12 +10,12 @@ Ads
 {% for ad in list_of_ads %}
 <div class="card mb-3">
     <div class="card-header">
-        {{ ad.category }} by {{ ad.author }}
+        {{ ad.category }} request by {{ ad.author }}
     </div>
     <div class="card-body">
         <h5 class="card-title">{{ ad.title }}</h5>
-        <p class="card-text">{{ ad.replies_to_adv.count }}</p>
-        <a href="{% url 'ad_detail' pk=ad.id %}" class="btn btn-success">See</a>
+        <p class="card-text">Replies to this request: {{ ad.replies_to_adv.count }}</p>
+        <a href="{{ ad.get_adv_pk }}" class="btn btn-success">See</a>
     </div>
 </div>
 {% endfor %}

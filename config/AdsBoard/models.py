@@ -4,16 +4,16 @@ from ckeditor.fields import RichTextField
 
 
 CATEGORIES = [
-    ('TK', 'Tank'),
-    ('HL', 'Healer'),
-    ('DD', 'Damage dealer'),
-    ('TR', 'Trader'),
-    ('GM', 'Guild master'),
-    ('QG', 'Quest giver'),
-    ('WS', 'Warsmith'),
-    ('TN', 'Tanner'),
-    ('PM', 'Potion maker'),
-    ('SM', 'Spell master'),
+    ('Tank', 'TK'),
+    ('Healer', 'HL'),
+    ('Damage dealer', 'DD'),
+    ('Trader', 'TR'),
+    ('Guild master', 'GM'),
+    ('Quest giver', 'QG'),
+    ('Warsmith', 'WS'),
+    ('Tanner', 'TN'),
+    ('Potion maker', 'PM'),
+    ('Spell master', 'SM'),
 ]
 
 
@@ -36,7 +36,7 @@ class Adv(models.Model):
     )
 
     category = models.CharField(
-        max_length=2,
+        max_length=15,
         choices=CATEGORIES,
         default=None,
     )
@@ -50,8 +50,8 @@ class Adv(models.Model):
     def __str__(self) -> str:
         return f'{self.title}'
 
-    def get_adv_url(self) -> str:
-        return f'ads/{self.id}/'
+    def get_adv_pk(self) -> str:
+        return f'{self.id}/'
 
 
 class Reply(models.Model):

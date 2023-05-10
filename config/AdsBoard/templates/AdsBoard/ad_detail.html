@@ -2,19 +2,20 @@
 
 
 {% block title %}
-{{ adv.title }} - {{ block.super }}
+{{ ad.title }} - {{ block.super }}
 {% endblock title %}
 
 
 {% block content %}
 <div class="card text-center">
     <div class="card-header">
-        {{ ad.title }}
+        Posted by {{ ad.author }}
     </div>
     <div class="card-body">
         <h5 class="card-title">
-            {{ ad.author }}
+            {{ ad.title }}
         </h5>
+        <hr>
         <p class="card-text">
             {{ ad.content|safe }}
         </p>
@@ -23,4 +24,22 @@
         {{ ad.date_of_creation }}
     </div>
 </div>
+
+<br>
+
+{% for repl in ad.replies_to_adv.all %}
+<div class="card mb-3 mx-auto" style="width: 50%">
+    <h5 class="card-header">
+        Reply by {{ repl.author }}
+    </h5>
+    <div class="card-body">
+        <p class="card-text">
+            {{ repl.text }}
+        </p>
+        <a href="#" class="btn btn-success">Accept</a>
+        <a href="#" class="btn btn-danger">Delete</a>
+    </div>
+</div>
+{% endfor %}
+
 {% endblock content %}

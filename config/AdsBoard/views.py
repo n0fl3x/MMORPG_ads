@@ -1,3 +1,4 @@
+from pprint import pprint
 from django.views.generic import ListView, DetailView
 
 from .models import *
