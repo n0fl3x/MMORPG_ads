@@ -1,4 +1,4 @@
-from django.views.generic import ListView
+from django.views.generic import ListView, DetailView
 
 from .models import *
 
@@ -10,3 +10,9 @@ class AdsListView(ListView):
     ordering = '-date_of_creation'
     paginate_by = 5
     paginate_orphans = 1
+
+
+class AdDetailView(DetailView):
+    model = Adv
+    template_name = 'AdsBoard/ad_detail.html'
+    context_object_name = 'ad'

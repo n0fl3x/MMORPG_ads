@@ -14,9 +14,8 @@ Ads
     </div>
     <div class="card-body">
         <h5 class="card-title">{{ ad.title }}</h5>
-        <p class="card-text">{{ ad.content | safe }}</p>
         <p class="card-text">{{ ad.replies_to_adv.count }}</p>
-        <a href="#" class="btn btn-success">See</a>
+        <a href="{% url 'ad_detail' pk=ad.id %}" class="btn btn-success">See</a>
     </div>
 </div>
 {% endfor %}

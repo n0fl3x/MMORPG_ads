@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+
+{% block title %}
+{{ adv.title }} - {{ block.super }}
+{% endblock title %}
+
+
+{% block content %}
+<div class="card text-center">
+    <div class="card-header">
+        {{ ad.title }}
+    </div>
+    <div class="card-body">
+        <h5 class="card-title">
+            {{ ad.author }}
+        </h5>
+        <p class="card-text">
+            {{ ad.content|safe }}
+        </p>
+    </div>
+    <div class="card-footer text-muted">
+        {{ ad.date_of_creation }}
+    </div>
+</div>
+{% endblock content %}
