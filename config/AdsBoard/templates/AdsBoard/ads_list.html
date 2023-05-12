@@ -17,6 +17,9 @@ Ads
         <p class="card-text">Replies to this request: {{ ad.replies_to_adv.count }}</p>
         <a href="{{ ad.get_adv_pk }}" class="btn btn-success">See</a>
     </div>
+    <div class="card-footer text-muted">
+        {{ ad.date_of_creation }}
+    </div>
 </div>
 {% endfor %}
 {% endblock content %}
