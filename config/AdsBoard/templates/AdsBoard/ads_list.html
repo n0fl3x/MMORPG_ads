@@ -2,11 +2,12 @@
 
 
 {% block title %}
-Ads
+Ads - {{ block.super }}
 {% endblock title %}
 
 
 {% block content %}
+
 {% for ad in list_of_ads %}
 <div class="card mb-3">
     <div class="card-header">
@@ -21,5 +22,10 @@ Ads
         {{ ad.date_of_creation }}
     </div>
 </div>
+{% empty %}
+<h2>
+    No ads here yet
+</h2>
 {% endfor %}
+
 {% endblock content %}

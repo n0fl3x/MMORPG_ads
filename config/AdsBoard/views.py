@@ -1,6 +1,6 @@
 from pprint import pprint
 
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render
 from django.views.generic import ListView, DetailView
 
 from .models import *
@@ -41,12 +41,19 @@ class AdDetailView(DetailView):
         return queryset
 
 
-def adv_delete(request, pk):
+def ad_delete_ask(request, pk):
+    ad = Adv.objects.get(id=pk)
+    context = {
+        'ad': ad,
+        'question': 'Are you sure you want to delete this ad?',
+    }
+    return render(
+        request,
+        'AdsBoard/ad_delete.html',
+        context=context,
+    )
+
+
+def ad_delete_confirm(request, pk):
     Adv.objects.get(id=pk).delete()
     return redirect(to='ads_list')
-
-
-# def repl_delete(request, pk):
-#     ad = Adv.objects.get(id=pk)
-#     # ad.replies_to_adv.get()    ???????????????????
-#     return redirect(request.META.get('HTTP_REFERER'))

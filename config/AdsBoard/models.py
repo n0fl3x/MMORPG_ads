@@ -75,7 +75,11 @@ class Reply(models.Model):
 
     text = models.TextField()
 
-    approved = models.BooleanField(
+    is_approved = models.BooleanField(
+        default=False,
+    )
+
+    is_rejected = models.BooleanField(
         default=False,
     )
 
@@ -84,8 +88,20 @@ class Reply(models.Model):
         verbose_name_plural = 'Replies'
 
     def __str__(self) -> str:
-        return f'Reply #{self.id}'
+        return f'{self.text[:50]}...'
 
-    def is_approved(self) -> None:
-        self.approved = True
+    def approve(self) -> None:
+        self.is_approved = True
+        self.save()
+
+    def disapprove(self) -> None:
+        self.is_approved = False
+        self.save()
+
+    def reject(self) -> None:
+        self.is_rejected = True
+        self.save()
+
+    def unreject(self) -> None:
+        self.is_rejected = False
         self.save()

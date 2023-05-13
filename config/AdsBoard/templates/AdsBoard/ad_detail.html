@@ -7,6 +7,7 @@
 
 
 {% block content %}
+
 <div class="card text-center">
     <div class="card-header">
         Posted by {{ ad.author }}
@@ -22,7 +23,7 @@
     </div>
     <hr>
     <a href="#" class="btn btn-warning">Edit this ad</a>
-    <a href="{% url 'ad_del' ad.id %}" class="btn btn-danger">Delete this ad</a>
+    <a href="{% url 'ad_del_ask' pk=ad.id %}" class="btn btn-danger">Delete this ad</a>
     <div class="card-footer text-muted">
         {{ ad.date_of_creation }}
     </div>
@@ -46,6 +47,10 @@
         {{ repl.date_of_creation }}
     </div>
 </div>
+{% empty %}
+<h3>
+    No replies here yet
+</h3>
 {% endfor %}
 
 {% endblock content %}

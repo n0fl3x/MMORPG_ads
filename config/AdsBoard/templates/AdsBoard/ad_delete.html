@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+
+{% block title %}
+{{ ad.title }} - {{ block.super }}
+{% endblock title %}
+
+
+{% block content %}
+
+<div class="card text-center">
+    <div class="card-header">
+        {{ question }}
+    </div>
+    <div class="card-body">
+        <h5 class="card-title">
+            {{ ad }}
+        </h5>
+    </div>
+    <div class="card-footer text-muted">
+        {{ ad.date_of_creation }}
+    </div>
+</div>
+
+<br>
+
+<a href="{% url 'ad_detail' pk=ad.id %}" class="btn btn-secondary">Cancel</a>
+<a href="{% url 'ad_del_confirm' pk=ad.id %}" class="btn btn-danger">I'm sure. Delete this ad</a>
+
+{% endblock content %}
