@@ -2,7 +2,7 @@
 
 
 {% block title %}
-Ad deletion - {{ block.super }}
+Reply deletion - {{ block.super }}
 {% endblock title %}
 
 
@@ -14,15 +14,17 @@ Ad deletion - {{ block.super }}
     </div>
     <div class="card-body">
         <h5 class="card-title">
-            {{ ad }}
+            {{ reply }}
         </h5>
     </div>
     <div class="card-footer text-muted">
-        {{ ad.date_of_creation }}
+        {{ reply.date_of_creation }}
     </div>
 </div>
 <br>
-<a href="{% url 'ad_detail' pk=ad.id %}" class="btn btn-secondary">Cancel</a>
-<a href="{% url 'ad_del_confirm' pk=ad.id %}" class="btn btn-danger">I'm sure. Delete this ad</a>
+<a href="{% url 'ad_detail' pk=reply.adv.id %}" class="btn btn-secondary">Cancel</a>
+<a href="{% url 'repl_del_confirm' pk=reply.adv.id repl_pk=reply.id %}" class="btn btn-danger">
+    I'm sure. Delete this reply
+</a>
 
 {% endblock content %}

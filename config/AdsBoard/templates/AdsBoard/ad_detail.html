@@ -40,8 +40,20 @@
         <p class="card-text">
             {{ repl.text }}
         </p>
-        <a href="#" class="btn btn-success">Accept</a>
-        <a href="#" class="btn btn-danger">Delete</a>
+        <hr>
+        {% if repl.is_approved == False and repl.is_rejected == False %}
+        <a href="#" class="btn btn-success">Approve</a>
+        <a href="#" class="btn btn-dark">Reject</a>
+        {% elif repl.is_approved == True and repl.is_rejected == False %}
+        <a href="#" class="btn btn-outline-success">Disapprove</a>
+        <a href="#" class="btn btn-dark">Reject</a>
+        {% elif repl.is_approved == False and repl.is_rejected == True %}
+        <a href="#" class="btn btn-success">Approve</a>
+        <a href="#" class="btn btn-outline-dark">Unreject</a>
+        {% endif %}
+        <br>
+        <br>
+        <a href="{% url 'repl_del_ask' pk=ad.id repl_pk=repl.id %}" class="btn btn-danger">Delete this reply</a>
     </div>
     <div class="card-footer text-muted">
         {{ repl.date_of_creation }}

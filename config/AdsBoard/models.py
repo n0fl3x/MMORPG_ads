@@ -41,7 +41,9 @@ class Adv(models.Model):
         default=None,
     )
 
-    content = RichTextField()
+    content = RichTextField(
+        blank=True
+    )
 
     class Meta:
         verbose_name = 'Advertise'
@@ -73,7 +75,9 @@ class Reply(models.Model):
         related_name='replies_to_adv',
     )
 
-    text = models.TextField()
+    text = models.TextField(
+        blank=True,
+    )
 
     is_approved = models.BooleanField(
         default=False,

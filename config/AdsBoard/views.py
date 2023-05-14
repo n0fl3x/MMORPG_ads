@@ -32,6 +32,8 @@ class AdDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
+        current_ad = context.get('ad')
+        context['replies_to_this_ad'] = current_ad.replies_to_adv.all()
         pprint(context)
         return context
 
@@ -43,10 +45,12 @@ class AdDetailView(DetailView):
 
 def ad_delete_ask(request, pk):
     ad = Adv.objects.get(id=pk)
+
     context = {
         'ad': ad,
         'question': 'Are you sure you want to delete this ad?',
     }
+
     return render(
         request,
         'AdsBoard/ad_delete.html',
@@ -56,4 +60,31 @@ def ad_delete_ask(request, pk):
 
 def ad_delete_confirm(request, pk):
     Adv.objects.get(id=pk).delete()
-    return redirect(to='ads_list')
+    return redirect(
+        to='ads_list'
+    )
+
+
+def repl_delete_ask(request, pk, repl_pk):
+    ad = Adv.objects.get(id=pk)
+    current_repl = ad.replies_to_adv.get(id=repl_pk)
+    context = {
+        'reply': current_repl,
+        'question': 'Are you sure you want to delete this reply?',
+    }
+
+    return render(
+        request,
+        'AdsBoard/reply_delete.html',
+        context=context,
+    )
+
+
+def repl_delete_confirm(request, pk, repl_pk):
+    ad = Adv.objects.get(id=pk)
+    ad.replies_to_adv.get(id=repl_pk).delete()
+
+    return redirect(
+        to='ad_detail',
+        pk=pk,
+    )
