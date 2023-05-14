@@ -88,3 +88,33 @@ def repl_delete_confirm(request, pk, repl_pk):
         to='ad_detail',
         pk=pk,
     )
+
+
+def repl_approve_and_disapprove(request, pk, repl_pk):
+    ad = Adv.objects.get(id=pk)
+    current_repl = ad.replies_to_adv.get(id=repl_pk)
+
+    if not current_repl.is_approved and not current_repl.is_rejected:
+        current_repl.approve()
+    elif current_repl.is_approved and not current_repl.is_rejected:
+        current_repl.disapprove()
+    elif not current_repl.is_approved and current_repl.is_rejected:
+        current_repl.unreject()
+        current_repl.approve()
+
+    return redirect(request.META.get('HTTP_REFERER'))
+
+
+def repl_reject_and_unreject(request, pk, repl_pk):
+    ad = Adv.objects.get(id=pk)
+    current_repl = ad.replies_to_adv.get(id=repl_pk)
+
+    if not current_repl.is_rejected and not current_repl.is_approved:
+        current_repl.reject()
+    elif current_repl.is_rejected and not current_repl.is_approved:
+        current_repl.unreject()
+    elif not current_repl.is_rejected and current_repl.is_approved:
+        current_repl.disapprove()
+        current_repl.reject()
+
+    return redirect(request.META.get('HTTP_REFERER'))

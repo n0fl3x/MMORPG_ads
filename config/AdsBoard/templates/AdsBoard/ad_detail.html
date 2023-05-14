@@ -42,14 +42,14 @@
         </p>
         <hr>
         {% if repl.is_approved == False and repl.is_rejected == False %}
-        <a href="#" class="btn btn-success">Approve</a>
-        <a href="#" class="btn btn-dark">Reject</a>
+        <a href="{% url 'repl_apr_and_disapr' pk=ad.id repl_pk=repl.id %}" class="btn btn-success">Approve</a>
+        <a href="{% url 'repl_rej_and_unrej' pk=ad.id repl_pk=repl.id %}" class="btn btn-dark">Reject</a>
         {% elif repl.is_approved == True and repl.is_rejected == False %}
-        <a href="#" class="btn btn-outline-success">Disapprove</a>
-        <a href="#" class="btn btn-dark">Reject</a>
+        <a href="{% url 'repl_apr_and_disapr' pk=ad.id repl_pk=repl.id %}" class="btn btn-outline-success">Disapprove</a>
+        <a href="{% url 'repl_rej_and_unrej' pk=ad.id repl_pk=repl.id %}" class="btn btn-dark">Reject</a>
         {% elif repl.is_approved == False and repl.is_rejected == True %}
-        <a href="#" class="btn btn-success">Approve</a>
-        <a href="#" class="btn btn-outline-dark">Unreject</a>
+        <a href="{% url 'repl_apr_and_disapr' pk=ad.id repl_pk=repl.id %}" class="btn btn-success">Approve</a>
+        <a href="{% url 'repl_rej_and_unrej' pk=ad.id repl_pk=repl.id %}" class="btn btn-outline-dark">Unreject</a>
         {% endif %}
         <br>
         <br>
