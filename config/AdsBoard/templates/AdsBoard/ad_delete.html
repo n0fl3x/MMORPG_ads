@@ -22,7 +22,11 @@ Ad deletion - {{ block.super }}
     </div>
 </div>
 <br>
-<a href="{% url 'ad_detail' pk=ad.id %}" class="btn btn-secondary">Cancel</a>
-<a href="{% url 'ad_del_confirm' pk=ad.id %}" class="btn btn-danger">I'm sure. Delete this ad</a>
+<a href="{% url 'ad_detail' pk=ad.id %}" class="btn btn-secondary">
+    Cancel
+</a>
+<a href="{% url 'ad_del_confirm' pk=ad.id %}" class="btn btn-danger">
+    I'm sure. Delete this ad
+</a>
 
 {% endblock content %}

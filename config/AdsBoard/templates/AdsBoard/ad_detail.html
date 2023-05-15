@@ -22,8 +22,12 @@
         </p>
     </div>
     <hr>
-    <a href="#" class="btn btn-warning">Edit this ad</a>
-    <a href="{% url 'ad_del_ask' pk=ad.id %}" class="btn btn-danger">Delete this ad</a>
+    <a href="#" class="btn btn-warning">
+        Edit this ad
+    </a>
+    <a href="{% url 'ad_del_ask' pk=ad.id %}" class="btn btn-danger">
+        Delete this ad
+    </a>
     <div class="card-footer text-muted">
         {{ ad.date_of_creation }}
     </div>
@@ -41,19 +45,33 @@
             {{ repl.text }}
         </p>
         <hr>
-        {% if repl.is_approved == False and repl.is_rejected == False %}
-        <a href="{% url 'repl_apr_and_disapr' pk=ad.id repl_pk=repl.id %}" class="btn btn-success">Approve</a>
-        <a href="{% url 'repl_rej_and_unrej' pk=ad.id repl_pk=repl.id %}" class="btn btn-dark">Reject</a>
-        {% elif repl.is_approved == True and repl.is_rejected == False %}
-        <a href="{% url 'repl_apr_and_disapr' pk=ad.id repl_pk=repl.id %}" class="btn btn-outline-success">Disapprove</a>
-        <a href="{% url 'repl_rej_and_unrej' pk=ad.id repl_pk=repl.id %}" class="btn btn-dark">Reject</a>
-        {% elif repl.is_approved == False and repl.is_rejected == True %}
-        <a href="{% url 'repl_apr_and_disapr' pk=ad.id repl_pk=repl.id %}" class="btn btn-success">Approve</a>
-        <a href="{% url 'repl_rej_and_unrej' pk=ad.id repl_pk=repl.id %}" class="btn btn-outline-dark">Unreject</a>
+        {% if not repl.is_approved and not repl.is_rejected %}
+        <a href="{% url 'repl_apr_and_disapr' pk=ad.id repl_pk=repl.id %}" class="btn btn-success">
+            Approve
+        </a>
+        <a href="{% url 'repl_rej_and_unrej' pk=ad.id repl_pk=repl.id %}" class="btn btn-dark">
+            Reject
+        </a>
+        {% elif repl.is_approved and not repl.is_rejected %}
+        <a href="{% url 'repl_apr_and_disapr' pk=ad.id repl_pk=repl.id %}" class="btn btn-outline-success">
+            Disapprove
+        </a>
+        <a href="{% url 'repl_rej_and_unrej' pk=ad.id repl_pk=repl.id %}" class="btn btn-dark">
+            Reject
+        </a>
+        {% elif not repl.is_approved and repl.is_rejected %}
+        <a href="{% url 'repl_apr_and_disapr' pk=ad.id repl_pk=repl.id %}" class="btn btn-success">
+            Approve
+        </a>
+        <a href="{% url 'repl_rej_and_unrej' pk=ad.id repl_pk=repl.id %}" class="btn btn-outline-dark">
+            Unreject
+        </a>
         {% endif %}
         <br>
         <br>
-        <a href="{% url 'repl_del_ask' pk=ad.id repl_pk=repl.id %}" class="btn btn-danger">Delete this reply</a>
+        <a href="{% url 'repl_del_ask' pk=ad.id repl_pk=repl.id %}" class="btn btn-danger">
+            Delete this reply
+        </a>
     </div>
     <div class="card-footer text-muted">
         {{ repl.date_of_creation }}
