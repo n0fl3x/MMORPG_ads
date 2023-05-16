@@ -7,11 +7,11 @@ from .models import *
 
 
 class AdsListView(ListView):
-    model = Adv
+    # model = Adv
     template_name = 'AdsBoard/ads_list.html'
     context_object_name = 'list_of_ads'
     ordering = '-date_of_creation'
-    paginate_by = 2
+    paginate_by = 5
     paginate_orphans = 1
 
     def get_context_data(self, **kwargs):
@@ -20,7 +20,8 @@ class AdsListView(ListView):
         return context
 
     def get_queryset(self):
-        queryset = super().get_queryset()
+        # здесь мы уменьшаем количество запросов в БД для оптимизации нагрузки на СУБД
+        queryset = Adv.objects.all().select_related('author')
         pprint(queryset)
         return queryset
 
