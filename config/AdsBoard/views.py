@@ -11,7 +11,7 @@ class AdsListView(ListView):
     template_name = 'AdsBoard/ads_list.html'
     context_object_name = 'list_of_ads'
     ordering = '-date_of_creation'
-    paginate_by = 5
+    paginate_by = 2
     paginate_orphans = 1
 
     def get_context_data(self, **kwargs):
