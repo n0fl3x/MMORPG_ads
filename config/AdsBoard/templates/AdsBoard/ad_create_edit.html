@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+
+{% block title %}
+Create ad - {{ block.super }}
+{% endblock title %}
+
+
+{% block content %}
+
+<form action="" method="POST" align="left">
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+    <div class="fieldWrapper">
+        {{ form.category.errors }}
+        <br>
+        <label for="{{ form.category.id_for_label }}">Category:</label>
+        <br>
+        {{ form.category }}
+        <hr>
+    </div>
+    <div class="fieldWrapper">
+        {{ form.title.errors }}
+        <br>
+        <label for="{{ form.title.id_for_label }}">Title:</label>
+        <br>
+        {{ form.title }}
+        <hr>
+    </div>
+    <div class="fieldWrapper">
+        {{ form.content.errors }}
+        <br>
+        <label for="{{ form.content.id_for_label }}">Content:</label>
+        <br>
+        {{ form.media }}
+        {{ form.content }}
+        <hr>
+    </div>
+    <br>
+    <input type="submit" class="btn btn-success" value="Save"/>
+</form>
+
+{% endblock content %}

@@ -1,6 +1,6 @@
+from ckeditor_uploader.fields import RichTextUploadingField
 from django.contrib.auth.models import User
 from django.db import models
-from ckeditor.fields import RichTextField
 
 
 CATEGORIES = [
@@ -41,8 +41,8 @@ class Adv(models.Model):
         default=None,
     )
 
-    content = RichTextField(
-        blank=True
+    content = RichTextUploadingField(
+        blank=True,
     )
 
     class Meta:
@@ -51,9 +51,6 @@ class Adv(models.Model):
 
     def __str__(self) -> str:
         return f'{self.title}'
-
-    def get_adv_pk(self) -> str:
-        return f'{self.id}/'
 
 
 class Reply(models.Model):

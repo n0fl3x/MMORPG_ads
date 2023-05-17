@@ -22,13 +22,13 @@ from config import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('ckeditor/', include('ckeditor_uploader.urls')),
     path('', include('AdsBoard.urls')),
 ]
 
 
 if settings.DEBUG:
     import debug_toolbar
-
     urlpatterns = [
         path('__debug__/', include(debug_toolbar.urls)),
     ] + urlpatterns

@@ -1,17 +1,20 @@
 from pprint import pprint
 
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect, render
-from django.views.generic import ListView, DetailView
+from django.urls import reverse_lazy
+from django.views.generic import ListView, DetailView, CreateView
 
+from .forms import AdvForm
 from .models import *
+from .filters import AdvFilter
 
 
 class AdsListView(ListView):
     # model = Adv
     template_name = 'AdsBoard/ads_list.html'
     context_object_name = 'list_of_ads'
-    ordering = '-date_of_creation'
-    paginate_by = 5
+    paginate_by = 1
     paginate_orphans = 1
 
     def get_context_data(self, **kwargs):
@@ -20,10 +23,32 @@ class AdsListView(ListView):
         return context
 
     def get_queryset(self):
-        # здесь мы уменьшаем количество запросов в БД для оптимизации нагрузки на СУБД
-        queryset = Adv.objects.all().select_related('author')
+        # здесь мы уменьшаем количество запросов в БД через select_related для оптимизации нагрузки на СУБД
+        queryset = Adv.objects.all().order_by('-date_of_creation').select_related('author')
         pprint(queryset)
         return queryset
+
+
+class AdsSearchView(ListView):
+    model = Adv
+    template_name = 'AdsBoard/ads_search.html'
+    ordering = '-date_of_creation'
+    context_object_name = 'search_ads'
+    paginate_by = 1
+    paginate_orphans = 1
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['filterset'] = self.filterset
+        context['querydict'] = self.request.GET.dict()
+        pprint(context)
+        return context
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        self.filterset = AdvFilter(self.request.GET, queryset)
+        pprint(self.filterset)
+        return self.filterset.qs
 
 
 class AdDetailView(DetailView):
@@ -119,3 +144,15 @@ def repl_reject_and_unreject(request, pk, repl_pk):
         current_repl.reject()
 
     return redirect(request.META.get('HTTP_REFERER'))
+
+
+class AdCreateView(LoginRequiredMixin, CreateView):
+    model = Adv
+    success_url = reverse_lazy('ads_list')
+    form_class = AdvForm
+    template_name = 'AdsBoard/ad_create_edit.html'
+
+    def form_valid(self, form):
+        ad = form.save(commit=False)
+        ad.author = self.request.user
+        return super().form_valid(form)

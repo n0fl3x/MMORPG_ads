@@ -1,0 +1,161 @@
+{% extends 'base.html' %}
+
+{% load AdsBoard_filters %}
+{% load AdsBoard_tags %}
+
+{% block title %}
+Ads Search - {{ block.super }}
+{% endblock title %}
+
+
+{% block content %}
+
+<form action="" method="get" align="right">
+    {{ filterset.form.as_p }}
+    <button class="btn btn-success" type="submit">Search</button>
+</form>
+<hr>
+
+<h5 align="left">
+    Total: {{ page_obj.paginator.count }} ads
+    {% if page_obj.paginator.num_pages != 1 %}
+    on {{ page_obj.paginator.num_pages }} pages
+    {% endif %}
+</h5>
+<hr>
+
+{% for ad in search_ads %}
+<div class="card mb-3">
+    <div class="card-header">
+        {{ ad.category }} request by {{ ad.author }}
+    </div>
+    <div class="card-body">
+        <h5 class="card-title">
+            {{ ad.title }}
+        </h5>
+        <p class="card-text">
+            Replies to this request: {{ ad.replies_to_adv.count }}
+        </p>
+        <a href="{% url 'ad_detail' pk=ad.id %}" class="btn btn-success">
+            See
+        </a>
+    </div>
+    <div class="card-footer text-muted">
+        {{ ad.date_of_creation }}
+    </div>
+</div>
+{% empty %}
+<h2>
+    No ads here yet
+</h2>
+{% endfor %}
+
+<br>
+
+<nav aria-label="Page navigation example">
+    <ul class="pagination pagination-sm justify-content-center">
+        {% if page_obj.has_previous %}
+        <li class="page-item">
+            <a class="page-link" href="?{% url_replace page=page_obj.previous_page_number %}">
+                Previous
+            </a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+            <a class="page-link" href="#">
+                Previous
+            </a>
+        </li>
+        {% endif %}
+
+        {% if page_obj.paginator.num_pages <= 5 %}
+
+        {% for page_num in page_obj.paginator.num_pages|listing %}
+        {% if page_num == page_obj.number %}
+        <li class="page-item active" aria-current="page">
+            <a class="page-link" href="?{% url_replace page=page_num %}">
+                {{ page_num }}
+            </a>
+        </li>
+        {% else %}
+        <li class="page-item">
+            <a class="page-link" href="?{% url_replace page=page_num %}">
+                {{ page_num }}
+            </a>
+        </li>
+        {% endif %}
+        {% endfor %}
+
+        {% else %}
+
+        {% if page_obj.has_previous %}
+        <li class="page-item">
+            <a class="page-link" href="?{% url_replace page=page_obj.previous_page_number %}">
+                {{ page_obj.previous_page_number }}
+            </a>
+        </li>
+        {% endif %}
+
+        <li class="page-item active" aria-current="page">
+            <a class="page-link" href="?{% url_replace page=page_obj.number %}">
+                {{ page_obj.number }}
+            </a>
+        </li>
+
+        {% if page_obj.has_next %}
+        <li class="page-item">
+            <a class="page-link" href="?{% url_replace page=page_obj.next_page_number %}">
+                {{ page_obj.next_page_number }}
+            </a>
+        </li>
+        {% endif %}
+        {% endif %}
+
+        {% if page_obj.has_next %}
+        <li class="page-item">
+            <a class="page-link" href="?{% url_replace page=page_obj.next_page_number %}">
+                Next
+            </a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+            <a class="page-link" href="#">
+                Next
+            </a>
+        </li>
+        {% endif %}
+    </ul>
+</nav>
+
+<nav aria-label="Page navigation example">
+    <ul class="pagination pagination-sm justify-content-center">
+        {% if page_obj.has_previous %}
+        <li class="page-item">
+            <a class="page-link" href="?{% url_replace page=1 %}">
+                First
+            </a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+            <a class="page-link" href="#">
+                First
+            </a>
+        </li>
+        {% endif %}
+        {% if page_obj.has_next %}
+        <li class="page-item">
+            <a class="page-link" href="?{% url_replace page=page_obj.paginator.num_pages %}">
+                Last
+            </a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+            <a class="page-link" href="#">
+                Last
+            </a>
+        </li>
+        {% endif %}
+    </ul>
+</nav>
+
+{% endblock content %}

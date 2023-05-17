@@ -26,7 +26,7 @@ Ads - {{ block.super }}
         <p class="card-text">
             Replies to this request: {{ ad.replies_to_adv.count }}
         </p>
-        <a href="{{ ad.get_adv_pk }}" class="btn btn-success">
+        <a href="{{ ad.id }}" class="btn btn-success">
             See
         </a>
     </div>
@@ -121,7 +121,7 @@ Ads - {{ block.super }}
     <ul class="pagination pagination-sm justify-content-center">
         {% if page_obj.has_previous %}
         <li class="page-item">
-            <a class="page-link" href="{% url 'ads_list' %}">
+            <a class="page-link" href="?page=1">
                 First
             </a>
         </li>

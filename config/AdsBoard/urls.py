@@ -1,7 +1,7 @@
 from django.urls import path
 
 from AdsBoard.views import (
-    AdsListView, AdDetailView,
+    AdsListView, AdDetailView, AdsSearchView, AdCreateView,
     ad_delete_ask, ad_delete_confirm, repl_delete_ask, repl_delete_confirm,
     repl_reject_and_unreject, repl_approve_and_disapprove,
 )
@@ -15,4 +15,6 @@ urlpatterns = [
     path('ads/<int:pk>/repl_del_ask/<int:repl_pk>/repl_del_confirm/', repl_delete_confirm, name='repl_del_confirm'),
     path('ads/<int:pk>/repl_apr_and_disapr/<int:repl_pk>/', repl_approve_and_disapprove, name='repl_apr_and_disapr'),
     path('ads/<int:pk>/repl_rej_and_unrej/<int:repl_pk>/', repl_reject_and_unreject, name='repl_rej_and_unrej'),
+    path('ads_search/', AdsSearchView.as_view(), name='ads_search'),
+    path('ad_create/', AdCreateView.as_view(), name='ad_create'),
 ]

@@ -1,3 +1,7 @@
 /venv/
 /.idea/
 .env
+
+/config/AdsBoard/media/
+/config/AdsBoard/static/
+/config/mmorpg_db.sqlite3
