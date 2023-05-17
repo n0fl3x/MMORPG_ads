@@ -2,6 +2,6 @@
 /.idea/
 .env
 
-/config/media/
-/config/static/
+/config/media/*
+/config/static/*
 /config/mmorpg_db.sqlite3
