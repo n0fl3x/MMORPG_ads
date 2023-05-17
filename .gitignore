@@ -3,6 +3,7 @@
 .env
 
 /config/mmorpg_db.sqlite3
-/config/static/
-/config/media/
-/config/config/__pycache__/
+/config/static/*
+/config/media/*
+/config/config/__pycache__/*
+__pycache__/*
