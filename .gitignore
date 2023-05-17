@@ -5,3 +5,4 @@
 /config/mmorpg_db.sqlite3
 /config/static/
 /config/media/
+/config/config/__pycache__/
