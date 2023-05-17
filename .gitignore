@@ -2,6 +2,6 @@
 /.idea/
 .env
 
-/config/AdsBoard/media/
-/config/AdsBoard/static/
+/config/media/
+/config/static/
 /config/mmorpg_db.sqlite3
