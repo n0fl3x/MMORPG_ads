@@ -1,10 +1,13 @@
 from ckeditor_uploader.widgets import CKEditorUploadingWidget
+from django.db.models import TextField
 from django.forms import ModelForm, ChoiceField, CharField
 
-from .models import Adv, CATEGORIES
+from .models import Adv, Reply, CATEGORIES
 
 
 class AdvForm(ModelForm):
+    """A form to create or edit ads."""
+
     category = ChoiceField(
         choices=CATEGORIES,
         label='Select category',
@@ -36,4 +39,16 @@ class AdvForm(ModelForm):
             'category',
             'title',
             'content',
+        ]
+
+
+class ReplyForm(ModelForm):
+    """A form to create or edit replies."""
+
+    text = TextField()
+
+    class Meta:
+        model = Reply
+        fields = [
+            'text',
         ]

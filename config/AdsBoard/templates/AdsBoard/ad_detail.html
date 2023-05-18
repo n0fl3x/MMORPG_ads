@@ -22,16 +22,39 @@
         </p>
     </div>
     <hr>
+    {% if ad.author == request.user %}
     <a href="#" class="btn btn-warning">
         Edit this ad
     </a>
     <a href="{% url 'ad_del_ask' pk=ad.id %}" class="btn btn-danger">
         Delete this ad
     </a>
+    {% endif %}
     <div class="card-footer text-muted">
         {{ ad.date_of_creation }}
     </div>
 </div>
+
+{% if ad.author != request.user %}
+<br>
+<hr>
+<form action="" method="POST" align="center">
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+    <div class="fieldWrapper">
+        {{ form.text.errors }}
+        <br>
+        <label for="{{ form.text.id_for_label }}">You can add your reply here:</label>
+        <br>
+        {{ form.text }}
+        <br>
+        <br>
+    </div>
+    <input type="submit" class="btn btn-success" value="Save"/>
+</form>
+<br>
+<hr>
+{% endif %}
 
 <br>
 
@@ -44,6 +67,7 @@
         <p class="card-text">
             {{ repl.text }}
         </p>
+        {% if ad.author == request.user %}
         <hr>
         {% if not repl.is_approved and not repl.is_rejected %}
         <a href="{% url 'repl_apr_and_disapr' pk=ad.id repl_pk=repl.id %}" class="btn btn-success">
@@ -67,11 +91,13 @@
             Unreject
         </a>
         {% endif %}
-        <br>
-        <br>
+        {% endif %}
+        {% if repl.author == request.user %}
+        <hr>
         <a href="{% url 'repl_del_ask' pk=ad.id repl_pk=repl.id %}" class="btn btn-danger">
             Delete this reply
         </a>
+        {% endif %}
     </div>
     <div class="card-footer text-muted">
         {{ repl.date_of_creation }}

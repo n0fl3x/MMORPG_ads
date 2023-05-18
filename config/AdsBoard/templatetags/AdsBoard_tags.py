@@ -9,6 +9,6 @@ def url_replace(context, **kwargs):
     which takes some kwargs in template and add them to QueryDict."""
 
     context_copy = context['request'].GET.copy()
-    for a, b in kwargs.items():
-        context_copy[a] = b
+    for key, value in kwargs.items():
+        context_copy[key] = value
     return context_copy.urlencode()
