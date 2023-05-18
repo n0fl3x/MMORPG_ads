@@ -3,7 +3,7 @@ from pprint import pprint
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy, reverse
-from django.views.generic import ListView, DetailView, CreateView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView
 
 from .forms import AdvForm, ReplyForm
 from .models import *
@@ -61,6 +61,8 @@ class AdDetailView(DetailView, CreateView):
         context = super().get_context_data()
         current_ad = context.get('ad')
         context['replies_to_this_ad'] = current_ad.replies_to_adv.all()
+        context['current_user_left_reply'] =\
+            context['replies_to_this_ad'].filter(author=self.request.user).exists()
         pprint(context)
         return context
 
@@ -153,7 +155,6 @@ def repl_reject_and_unreject(request, pk, repl_pk):
 
 class AdCreateView(LoginRequiredMixin, CreateView):
     model = Adv
-    success_url = reverse_lazy('ads_list')
     form_class = AdvForm
     template_name = 'AdsBoard/ad_create_edit.html'
 
@@ -170,6 +171,11 @@ class AdCreateView(LoginRequiredMixin, CreateView):
     def get_success_url(self):
         return reverse('ad_detail', kwargs={'pk': self.object.pk})
 
-    def get_form_kwargs(self, *args, **kwargs):
-        kwargs = super(AdCreateView, self).get_form_kwargs()
-        return kwargs
+
+class AdUpdateView(UpdateView):
+    model = Adv
+    form_class = AdvForm
+    template_name = 'AdsBoard/ad_create_edit.html'
+
+    def get_success_url(self):
+        return reverse('ad_detail', kwargs={'pk': self.object.pk})

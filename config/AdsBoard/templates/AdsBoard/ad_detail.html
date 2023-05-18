@@ -23,7 +23,7 @@
     </div>
     <hr>
     {% if ad.author == request.user %}
-    <a href="#" class="btn btn-warning">
+    <a href="{% url 'ad_update' pk=ad.id %}" class="btn btn-warning">
         Edit this ad
     </a>
     <a href="{% url 'ad_del_ask' pk=ad.id %}" class="btn btn-danger">
@@ -35,7 +35,7 @@
     </div>
 </div>
 
-{% if ad.author != request.user %}
+{% if ad.author != request.user and not current_user_left_reply %}
 <br>
 <hr>
 <form action="" method="POST" align="center">
@@ -50,7 +50,7 @@
         <br>
         <br>
     </div>
-    <input type="submit" class="btn btn-success" value="Save"/>
+    <input type="submit" class="btn btn-success" value="Send"/>
 </form>
 <br>
 <hr>
@@ -59,6 +59,10 @@
 <br>
 
 {% for repl in ad.replies_to_adv.all %}
+<h3>
+    Replies
+</h3>
+<br>
 <div class="card mb-3 mx-auto" style="width: 50%">
     <h5 class="card-header">
         Reply by {{ repl.author }}
