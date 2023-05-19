@@ -1,6 +1,7 @@
 from pprint import pprint
 
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, DetailView, CreateView, UpdateView
@@ -11,7 +12,6 @@ from .filters import AdvFilter
 
 
 class AdsListView(ListView):
-    # model = Adv
     template_name = 'AdsBoard/ads_list.html'
     context_object_name = 'list_of_ads'
     paginate_by = 1
@@ -23,7 +23,6 @@ class AdsListView(ListView):
         return context
 
     def get_queryset(self):
-        # здесь мы уменьшаем количество запросов в БД через select_related для оптимизации нагрузки на СУБД
         queryset = Adv.objects.all().order_by('-date_of_creation').select_related('author')
         pprint(queryset)
         return queryset
@@ -76,6 +75,7 @@ class AdDetailView(DetailView, CreateView):
         return super().form_valid(form)
 
 
+@login_required
 def ad_delete_ask(request, pk):
     ad = Adv.objects.get(id=pk)
 
@@ -91,6 +91,7 @@ def ad_delete_ask(request, pk):
     )
 
 
+@login_required
 def ad_delete_confirm(request, pk):
     Adv.objects.get(id=pk).delete()
     return redirect(
@@ -98,6 +99,7 @@ def ad_delete_confirm(request, pk):
     )
 
 
+@login_required
 def repl_delete_ask(request, pk, repl_pk):
     ad = Adv.objects.get(id=pk)
     current_repl = ad.replies_to_adv.get(id=repl_pk)
@@ -113,6 +115,7 @@ def repl_delete_ask(request, pk, repl_pk):
     )
 
 
+@login_required
 def repl_delete_confirm(request, pk, repl_pk):
     ad = Adv.objects.get(id=pk)
     ad.replies_to_adv.get(id=repl_pk).delete()
@@ -123,6 +126,7 @@ def repl_delete_confirm(request, pk, repl_pk):
     )
 
 
+@login_required
 def repl_approve_and_disapprove(request, pk, repl_pk):
     ad = Adv.objects.get(id=pk)
     current_repl = ad.replies_to_adv.get(id=repl_pk)
@@ -138,6 +142,7 @@ def repl_approve_and_disapprove(request, pk, repl_pk):
     return redirect(request.META.get('HTTP_REFERER'))
 
 
+@login_required
 def repl_reject_and_unreject(request, pk, repl_pk):
     ad = Adv.objects.get(id=pk)
     current_repl = ad.replies_to_adv.get(id=repl_pk)
@@ -172,7 +177,7 @@ class AdCreateView(LoginRequiredMixin, CreateView):
         return reverse('ad_detail', kwargs={'pk': self.object.pk})
 
 
-class AdUpdateView(UpdateView):
+class AdUpdateView(LoginRequiredMixin, UpdateView):
     model = Adv
     form_class = AdvForm
     template_name = 'AdsBoard/ad_create_edit.html'
