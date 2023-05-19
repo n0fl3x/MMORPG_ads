@@ -98,6 +98,19 @@
         {% endif %}
         {% if repl.author == request.user %}
         <hr>
+        {% if repl.is_approved %}
+        <div class="alert alert-success" role="alert">
+            You reply is approved.
+        </div>
+        {% elif repl.is_rejected %}
+        <div class="alert alert-danger" role="alert">
+            You reply is rejected.
+        </div>
+        {% else %}
+        <div class="alert alert-secondary" role="alert">
+            You reply is in neutral status yet.
+        </div>
+        {% endif %}
         <a href="{% url 'repl_del_ask' pk=ad.id repl_pk=repl.id %}" class="btn btn-danger">
             Delete this reply
         </a>
