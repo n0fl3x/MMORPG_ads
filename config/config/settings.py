@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 import os
 from pathlib import Path
+
+from django.urls import reverse_lazy
 from dotenv import load_dotenv, find_dotenv
 
 
@@ -56,6 +58,7 @@ INSTALLED_APPS = [
 
     # custom apps
     'AdsBoard',
+    'accounts',
 ]
 
 MIDDLEWARE = [
@@ -78,6 +81,8 @@ TEMPLATES = [
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
             os.path.join(BASE_DIR, 'templates'),
+            os.path.join(BASE_DIR, 'AdsBoard/templates'),
+            os.path.join(BASE_DIR, 'accounts/templates'),
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -152,8 +157,8 @@ SITE_ID = 1
 SITE_URL = 'http://127.0.0.1:8000'
 
 # For authorisation:
-LOGIN_REDIRECT_URL = 'ads_list'
-LOGOUT_REDIRECT_URL = 'ads_list'
+LOGIN_REDIRECT_URL = reverse_lazy('ads_list')
+LOGOUT_REDIRECT_URL = reverse_lazy('ads_list')
 
 # For media:
 MEDIA_URL = 'media/'
