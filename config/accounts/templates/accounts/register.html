@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+
+{% block title %}
+Create account - {{ block.super }}
+{% endblock title %}
+
+
+{% block content %}
+
+<h3>
+    Create account
+</h3>
+
+<br>
+{% for message in messages %}
+{{ message }}
+{% endfor %}
+<br>
+<br>
+
+<form method="POST" action="">
+    {% csrf_token %}
+    {{ reg_form.non_field_errors }}
+    <div class="fieldWrapper">
+        {{ reg_form.username.errors }}
+        <label for="{{ reg_form.username.id_for_label }}">Username:</label>
+        <br>
+        {{ reg_form.username }}
+        <br>
+    </div>
+    <div class="fieldWrapper">
+        {{ reg_form.email.errors }}
+        <label for="{{ reg_form.email.id_for_label }}">Email:</label>
+        <br>
+        {{ reg_form.email }}
+        <br>
+    </div>
+    <div class="fieldWrapper">
+        {{ reg_form.password1.errors }}
+        <label for="{{ reg_form.password1.id_for_label }}">Password:</label>
+        <br>
+        {{ reg_form.password1 }}
+        <br>
+    </div>
+    <div class="fieldWrapper">
+        {{ reg_form.password2.errors }}
+        <label for="{{ reg_form.password2.id_for_label }}">Repeat password:</label>
+        <br>
+        {{ reg_form.password2 }}
+        <br>
+    </div>
+    <br>
+    <input type="submit" class="btn btn-success" value="Register"/>
+</form>
+
+<br>
+<br>
+Already have an account?
+<a href="{% url 'account_login' %}" class="btn btn-success">
+    Login
+</a>
+
+{% endblock content %}

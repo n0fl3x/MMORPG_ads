@@ -35,6 +35,7 @@
     </div>
 </div>
 
+{% if user.is_authenticated %}
 {% if ad.author != request.user and not current_user_left_reply %}
 <br>
 <hr>
@@ -54,6 +55,7 @@
 </form>
 <br>
 <hr>
+{% endif %}
 {% endif %}
 
 <br>
