@@ -4,11 +4,18 @@
 {% load AdsBoard_tags %}
 
 {% block title %}
-Ads Search - {{ block.super }}
+My ads - {{ block.super }}
 {% endblock title %}
 
 
 {% block content %}
+
+<h5 align="right">
+    Welcome, {{ request.user }}.
+    <br>
+    All your replies are here.
+</h5>
+<hr>
 
 <form action="" method="get" align="right">
     {{ filterset.form.as_p }}
@@ -24,30 +31,50 @@ Ads Search - {{ block.super }}
 </h5>
 <hr>
 
-{% for ad in search_ads %}
-<div class="card mb-3">
-    <div class="card-header">
-        {{ ad.category }} request by {{ ad.author }}
-    </div>
-    <div class="card-body">
-        <h5 class="card-title">
-            {{ ad.title }}
-        </h5>
-        <p class="card-text">
-            Replies to this request: {{ ad.replies_to_adv.count }}
-        </p>
-        <a href="{% url 'ad_detail' pk=ad.id %}" class="btn btn-success">
-            See
+{% for repl in profile_repls %}
+<h3>
+    Replies
+</h3>
+<br>
+<div class="card mb-3 mx-auto" style="width: 50%">
+    <h5 class="card-header">
+        Reply by {{ repl.author }} to
+        <a href="{% url 'ad_detail' pk=repl.adv.id %}" class="btn btn-success">
+            {{ repl.adv.title|truncatechars:15 }}...
         </a>
+    </h5>
+    <div class="card-body">
+        <p class="card-text">
+            {{ repl.text }}
+        </p>
+        {% if repl.author == request.user %}
+        <hr>
+        {% if repl.is_approved %}
+        <div class="alert alert-success" role="alert">
+            You reply is approved.
+        </div>
+        {% elif repl.is_rejected %}
+        <div class="alert alert-danger" role="alert">
+            You reply is rejected.
+        </div>
+        {% else %}
+        <div class="alert alert-secondary" role="alert">
+            You reply is in neutral status yet.
+        </div>
+        {% endif %}
+        <a href="{% url 'repl_del_ask' pk=repl.adv.id repl_pk=repl.id %}" class="btn btn-danger">
+            Delete this reply
+        </a>
+        {% endif %}
     </div>
     <div class="card-footer text-muted">
-        {{ ad.date_of_creation }}
+        {{ repl.date_of_creation }}
     </div>
 </div>
 {% empty %}
-<h2>
-    No ads here yet
-</h2>
+<h3>
+    No replies here yet
+</h3>
 {% endfor %}
 
 <br>

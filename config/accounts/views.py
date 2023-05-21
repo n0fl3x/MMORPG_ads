@@ -6,6 +6,8 @@ from .forms import AccountCreationForm
 
 
 def account_register(request):
+    if request.user.is_authenticated:
+        return redirect('ads_list')
     form = AccountCreationForm()
     if request.method == 'POST':
         form = AccountCreationForm(request.POST)
@@ -30,6 +32,8 @@ def account_register(request):
 
 
 def account_login(request):
+    if request.user.is_authenticated:
+        return redirect('ads_list')
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')

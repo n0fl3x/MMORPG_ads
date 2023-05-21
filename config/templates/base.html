@@ -18,19 +18,30 @@
     <div class="container" id="navbarNav">
         <a class="navbar-brand" href="{% url 'ads_list' %}">Home (all ads)</a>
         <ul class="navbar-nav">
+
+            {% if not user.is_authenticated %}
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'account_register' %}">Register</a>
+            </li>
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'account_login' %}">Login</a>
             </li>
+            {% endif %}
+
             <li class="nav-item">
-                <a class="nav-link" href="#">My profile</a>
+                <a class="nav-link" href="{% url 'ads_search' %}">Search ads</a>
             </li>
+
+            {% if user.is_authenticated %}
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'ad_create' %}">Create ad</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{% url 'ads_search' %}">Search ads</a>
+                <a class="nav-link" href="{% url 'profile_ads' pk=request.user.id %}">My ads</a>
             </li>
-            {% if user.is_authenticated %}
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'profile_repls' pk=request.user.id %}">My replies</a>
+            </li>
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'account_logout' %}">Logout</a>
             </li>

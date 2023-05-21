@@ -6,15 +6,15 @@ from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, DetailView, CreateView, UpdateView
 from django.contrib.auth.decorators import login_required
 
-from .forms import AdvForm, ReplyForm
+from .forms import *
 from .models import *
-from .filters import AdvFilter
+from .filters import *
 
 
 class AdsListView(ListView):
     template_name = 'AdsBoard/ads_list.html'
     context_object_name = 'list_of_ads'
-    paginate_by = 1
+    paginate_by = 5
     paginate_orphans = 1
 
     def get_context_data(self, **kwargs):
@@ -33,7 +33,7 @@ class AdsSearchView(ListView):
     template_name = 'AdsBoard/ads_search.html'
     ordering = '-date_of_creation'
     context_object_name = 'search_ads'
-    paginate_by = 1
+    paginate_by = 5
     paginate_orphans = 1
 
     def get_context_data(self, **kwargs):
@@ -46,7 +46,6 @@ class AdsSearchView(ListView):
     def get_queryset(self):
         queryset = super().get_queryset()
         self.filterset = AdvFilter(self.request.GET, queryset)
-        pprint(self.filterset)
         return self.filterset.qs
 
 
@@ -81,7 +80,7 @@ class AdDetailView(DetailView, CreateView):
         return super().form_valid(form)
 
 
-@login_required
+@login_required(login_url='account_login')
 def ad_delete_ask(request, pk):
     ad = Adv.objects.get(id=pk)
 
@@ -97,7 +96,7 @@ def ad_delete_ask(request, pk):
     )
 
 
-@login_required
+@login_required(login_url='account_login')
 def ad_delete_confirm(request, pk):
     Adv.objects.get(id=pk).delete()
     return redirect(
@@ -105,7 +104,7 @@ def ad_delete_confirm(request, pk):
     )
 
 
-@login_required
+@login_required(login_url='account_login')
 def repl_delete_ask(request, pk, repl_pk):
     ad = Adv.objects.get(id=pk)
     current_repl = ad.replies_to_adv.get(id=repl_pk)
@@ -121,7 +120,7 @@ def repl_delete_ask(request, pk, repl_pk):
     )
 
 
-@login_required
+@login_required(login_url='account_login')
 def repl_delete_confirm(request, pk, repl_pk):
     ad = Adv.objects.get(id=pk)
     ad.replies_to_adv.get(id=repl_pk).delete()
@@ -132,7 +131,7 @@ def repl_delete_confirm(request, pk, repl_pk):
     )
 
 
-@login_required
+@login_required(login_url='account_login')
 def repl_approve_and_disapprove(request, pk, repl_pk):
     ad = Adv.objects.get(id=pk)
     current_repl = ad.replies_to_adv.get(id=repl_pk)
@@ -148,7 +147,7 @@ def repl_approve_and_disapprove(request, pk, repl_pk):
     return redirect(request.META.get('HTTP_REFERER'))
 
 
-@login_required
+@login_required(login_url='account_login')
 def repl_reject_and_unreject(request, pk, repl_pk):
     ad = Adv.objects.get(id=pk)
     current_repl = ad.replies_to_adv.get(id=repl_pk)
@@ -185,9 +184,50 @@ class AdCreateView(LoginRequiredMixin, CreateView):
 
 
 class AdUpdateView(LoginRequiredMixin, UpdateView):
+    login_url = 'account_login'
     model = Adv
     form_class = AdvForm
     template_name = 'AdsBoard/ad_create_edit.html'
 
     def get_success_url(self):
         return reverse('ad_detail', kwargs={'pk': self.object.pk})
+
+
+class ProfileAdsView(ListView):
+    template_name = 'AdsBoard/profile_ads.html'
+    ordering = '-date_of_creation'
+    context_object_name = 'profile_ads'
+    paginate_by = 5
+    paginate_orphans = 1
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['filterset'] = self.filterset
+        context['querydict'] = self.request.GET.dict()
+        pprint(context)
+        return context
+
+    def get_queryset(self):
+        queryset = Adv.objects.filter(author=self.request.user)
+        self.filterset = ProfileAdvFilter(self.request.GET, queryset)
+        return self.filterset.qs
+
+
+class ProfileRepliesView(ListView):
+    template_name = 'AdsBoard/profile_repls.html'
+    ordering = '-date_of_creation'
+    context_object_name = 'profile_repls'
+    paginate_by = 5
+    paginate_orphans = 1
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['filterset'] = self.filterset
+        context['querydict'] = self.request.GET.dict()
+        pprint(context)
+        return context
+
+    def get_queryset(self):
+        queryset = Reply.objects.filter(author=self.request.user)
+        self.filterset = ProfileReplyFilter(self.request.GET, queryset)
+        return self.filterset.qs

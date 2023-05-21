@@ -21,8 +21,8 @@
             {{ ad.content|safe }}
         </p>
     </div>
-    <hr>
     {% if ad.author == request.user %}
+    <hr>
     <a href="{% url 'ad_update' pk=ad.id %}" class="btn btn-warning">
         Edit this ad
     </a>
