@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+
+{% block title %}
+Activation - {{ block.super }}
+{% endblock title %}
+
+
+{% block content %}
+
+<h3>
+    Account activation
+</h3>
+<br>
+<form method="POST" action="">
+    {% csrf_token %}
+    <div class="form-group">
+        Confirmation code from email:
+        <input type="password" name="conf_code" class="form-control">
+        <br>
+    </div>
+    <br>
+    <h5 style="background-color: powderblue">
+        {% for message in messages %}
+        {{ message }}
+        {% endfor %}
+    </h5>
+    <br>
+    <input type="submit" class="btn btn-success" value="Activate"/>
+</form>
+
+<br>
+<br>
+Already have an account?
+<a href="{% url 'account_login' %}" class="btn btn-success">
+    Login
+</a>
+
+{% endblock content %}

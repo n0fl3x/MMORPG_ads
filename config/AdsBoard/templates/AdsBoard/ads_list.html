@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+
 {% load AdsBoard_filters %}
 
 
@@ -10,7 +11,10 @@ Ads - {{ block.super }}
 {% block content %}
 
 <h5 align="left">
-    Total: {{ page_obj.paginator.count }} ads on {{ page_obj.paginator.num_pages }} pages
+    Total: {{ page_obj.paginator.count }} ads
+    {% if page_obj.paginator.num_pages != 1 %}
+    on {{ page_obj.paginator.num_pages }} pages
+    {% endif %}
 </h5>
 <hr>
 

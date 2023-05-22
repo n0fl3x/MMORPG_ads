@@ -4,16 +4,16 @@ from django.db import models
 
 
 CATEGORIES = [
-    ('Tank', 'TK'),
-    ('Healer', 'HL'),
-    ('Damage dealer', 'DD'),
-    ('Trader', 'TR'),
-    ('Guild master', 'GM'),
-    ('Quest giver', 'QG'),
-    ('Warsmith', 'WS'),
-    ('Tanner', 'TN'),
-    ('Potion maker', 'PM'),
-    ('Spell master', 'SM'),
+    ('Tank', 'Tank'),
+    ('Healer', 'Healer'),
+    ('Damage dealer', 'Damage dealer'),
+    ('Trader', 'Trader'),
+    ('Guild master', 'Guild master'),
+    ('Quest giver', 'Quest giver'),
+    ('Warsmith', 'Warsmith'),
+    ('Tanner', 'Tanner'),
+    ('Potion maker', 'Potion maker'),
+    ('Spell master', 'Spell master'),
 ]
 
 

@@ -3,6 +3,7 @@
 {% load AdsBoard_filters %}
 {% load AdsBoard_tags %}
 
+
 {% block title %}
 Ads Search - {{ block.super }}
 {% endblock title %}
@@ -46,7 +47,7 @@ Ads Search - {{ block.super }}
 </div>
 {% empty %}
 <h2>
-    No ads here yet
+    No ads found
 </h2>
 {% endfor %}
 

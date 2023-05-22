@@ -3,6 +3,7 @@
 {% load AdsBoard_filters %}
 {% load AdsBoard_tags %}
 
+
 {% block title %}
 My ads - {{ block.super }}
 {% endblock title %}
@@ -52,9 +53,9 @@ My ads - {{ block.super }}
     </div>
 </div>
 {% empty %}
-<h2>
-    No ads here yet
-</h2>
+<h3>
+    You have no ads
+</h3>
 {% endfor %}
 
 <br>
