@@ -66,7 +66,6 @@ class AdDetailView(DetailView, CreateView):
             context['current_user_left_reply'] =\
                 context['replies_to_this_ad'].filter(author=self.request.user).exists()
 
-        pprint(self.request.user.id)
         pprint(context)
         return context
 

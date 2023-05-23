@@ -19,8 +19,10 @@ def account_register(request):
 
         if form.is_valid():
             user = form.save(commit=False)
+            username = user.username
+            user_email = user.email
 
-            if not User.objects.filter(username=user.username, email=user.email).exists():
+            if not User.objects.filter(email=user_email).exists():
                 user.is_active = False
                 user.save()
                 conf_code = one_time_password()
@@ -40,9 +42,12 @@ def account_register(request):
                     to=[to_email],
                 )
                 email.send()
+                messages.info(request, 'Activation code sent to you email.')
                 return redirect(to='account_confirm')
             else:
-                non_activated_user = User.objects.get(email=user.email, username=user.username)
+                non_activated_user = User.objects.get(email=user_email)
+                non_activated_user.username = username
+                non_activated_user.save()
                 new_conf_code = one_time_password()
                 old_conf_code = UsersCode.objects.get(user=non_activated_user)
                 old_conf_code.code = new_conf_code
@@ -63,6 +68,7 @@ def account_register(request):
                     to=[to_email],
                 )
                 email.send()
+                messages.info(request, 'New activation code sent to you email.')
                 return redirect(to='account_confirm')
     else:
         form = AccountCreationForm()

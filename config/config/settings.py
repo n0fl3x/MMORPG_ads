@@ -148,6 +148,10 @@ STATIC_URL = 'static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 STATICFILES_DIRS = []
 
+# For media:
+MEDIA_URL = 'media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
@@ -162,6 +166,7 @@ EMAIL_HOST = 'smtp.yandex.ru'
 EMAIL_PORT = 465
 EMAIL_HOST_USER = os.getenv('MY_EMAIL')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
+EMAIL_SUBJECT_PREFIX = 'MMORPG'
 EMAIL_USE_TLS = False
 EMAIL_USE_SSL = True
 DEFAULT_FROM_EMAIL = os.getenv('MY_EMAIL')
@@ -169,10 +174,6 @@ DEFAULT_FROM_EMAIL = os.getenv('MY_EMAIL')
 # For authorisation:
 LOGIN_REDIRECT_URL = reverse_lazy('ads_list')
 LOGOUT_REDIRECT_URL = reverse_lazy('ads_list')
-
-# For media:
-MEDIA_URL = 'media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
 # For Django-debug-toolbar:
 INTERNAL_IPS = [
@@ -184,3 +185,13 @@ FILTERS_EMPTY_CHOICE_LABEL = 'Select here'
 
 # For CKEditor:
 CKEDITOR_UPLOAD_PATH = 'uploads/'
+
+# For celery/redis:
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'Asia/Bishkek'
+REDIS_KEY = os.getenv('REDIS_KEY')
+PORT = os.getenv('PORT')
+CELERY_BROKER_URL = f'redis://default:{REDIS_KEY}@redis-{PORT}.c8.us-east-1-3.ec2.cloud.redislabs.com:{PORT}'
+CELERY_RESULT_BACKEND = f'redis://default:{REDIS_KEY}@redis-{PORT}.c8.us-east-1-3.ec2.cloud.redislabs.com:{PORT}'
