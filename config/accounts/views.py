@@ -52,7 +52,6 @@ def account_register(request):
                 old_conf_code = UsersCode.objects.get(user=non_activated_user)
                 old_conf_code.code = new_conf_code
                 old_conf_code.save()
-
                 mail_subj = 'New confirmation code'
                 to_email = form.cleaned_data.get('email')
                 message = render_to_string(
@@ -72,6 +71,7 @@ def account_register(request):
                 return redirect(to='account_confirm')
     else:
         form = AccountCreationForm()
+
     context = {
         'reg_form': form,
     }
@@ -94,10 +94,10 @@ def account_confirm(request):
             user.is_active = True
             user.save()
             UsersCode.objects.get(code=code).delete()
-
             return redirect(to='account_login')
         else:
             messages.info(request, 'Confirmation code is invalid.')
+
     context = {}
     return render(
         request,
@@ -124,6 +124,7 @@ def account_login(request):
             return redirect(to='ads_list')
         else:
             messages.info(request, 'Username or password is incorrect. Or your account is not activated.')
+
     context = {}
     return render(
         request,

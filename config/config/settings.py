@@ -158,7 +158,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 SITE_ID = 1
-SITE_URL = 'http://127.0.0.1:8000'
+SITE_URL = 'http://127.0.0.1:8000/ads'
 
 # For emails:
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

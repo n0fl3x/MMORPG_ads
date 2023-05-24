@@ -15,6 +15,7 @@ def new_reply_notification(instance, created, **kwargs):
         repl_text = repl.text
         repl_author = instance.author.username
         ad_author_email = ad.author.email
+
         new_reply_notify.delay(
             ad_author=ad_author,
             ad_title=ad_title,
@@ -39,6 +40,7 @@ def reply_status_notification(instance, **kwargs):
 
     if not old_repl.is_approved and instance.is_approved:
         status = 'approved!'
+
         reply_status_notify.delay(
             reply_author=repl_author,
             reply_text=repl_text,
@@ -47,8 +49,10 @@ def reply_status_notification(instance, **kwargs):
             status=status,
             email=email,
         )
+
     elif not old_repl.is_rejected and instance.is_rejected:
         status = 'rejected.'
+
         reply_status_notify.delay(
             reply_author=repl_author,
             reply_text=repl_text,

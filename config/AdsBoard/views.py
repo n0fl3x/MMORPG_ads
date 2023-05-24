@@ -1,5 +1,4 @@
 from pprint import pprint
-
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy, reverse
@@ -82,12 +81,10 @@ class AdDetailView(DetailView, CreateView):
 @login_required(login_url='account_login')
 def ad_delete_ask(request, pk):
     ad = Adv.objects.get(id=pk)
-
     context = {
         'ad': ad,
         'question': 'Are you sure you want to delete this ad?',
     }
-
     return render(
         request,
         'AdsBoard/ad_delete.html',
@@ -111,7 +108,6 @@ def repl_delete_ask(request, pk, repl_pk):
         'reply': current_repl,
         'question': 'Are you sure you want to delete this reply?',
     }
-
     return render(
         request,
         'AdsBoard/reply_delete.html',
@@ -123,7 +119,6 @@ def repl_delete_ask(request, pk, repl_pk):
 def repl_delete_confirm(request, pk, repl_pk):
     ad = Adv.objects.get(id=pk)
     ad.replies_to_adv.get(id=repl_pk).delete()
-
     return redirect(
         to='ad_detail',
         pk=pk,

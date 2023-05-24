@@ -43,7 +43,7 @@ class AdvForm(ModelForm):
 
 
 class ReplyForm(ModelForm):
-    """A form to create or edit replies."""
+    """A form to create replies."""
 
     text = TextField()
 
