@@ -2,12 +2,10 @@ from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.models import User
-from django.template.loader import render_to_string
-from django.core.mail import EmailMessage
 
 from .forms import AccountCreationForm
-from .passwords import one_time_password
 from .models import UsersCode
+from .tasks import new_user_conf_code_mail, non_activated_user_conf_code_mail
 
 
 def account_register(request):
@@ -22,53 +20,44 @@ def account_register(request):
             username = user.username
             user_email = user.email
 
+            # если не существует учётки с такой почтой
             if not User.objects.filter(email=user_email).exists():
                 user.is_active = False
                 user.save()
-                conf_code = one_time_password()
-                UsersCode.objects.create(user=user, code=conf_code)
-                mail_subj = 'Acccount confirmation'
-                to_email = form.cleaned_data.get('email')
-                message = render_to_string(
-                    template_name='accounts/account_activate_email.html',
-                    context={
-                        'username': user.username,
-                        'conf_code': conf_code,
-                    },
-                )
-                email = EmailMessage(
-                    subject=mail_subj,
-                    body=message,
-                    to=[to_email],
-                )
-                email.send()
-                messages.info(request, 'Activation code sent to you email.')
+                new_user_conf_code_mail.delay(user.id)
+                messages.info(
+                    request,
+                    'Activation code was sent to you email.')
+                # создаём нового неактивного юзера и отправляем ему код
                 return redirect(to='account_confirm')
+            # но если учётка с такой почтой существует
             else:
-                non_activated_user = User.objects.get(email=user_email)
-                non_activated_user.username = username
-                non_activated_user.save()
-                new_conf_code = one_time_password()
-                old_conf_code = UsersCode.objects.get(user=non_activated_user)
-                old_conf_code.code = new_conf_code
-                old_conf_code.save()
-                mail_subj = 'New confirmation code'
-                to_email = form.cleaned_data.get('email')
-                message = render_to_string(
-                    template_name='accounts/account_activate_email.html',
-                    context={
-                        'username': user.username,
-                        'conf_code': new_conf_code,
-                    },
-                )
-                email = EmailMessage(
-                    subject=mail_subj,
-                    body=message,
-                    to=[to_email],
-                )
-                email.send()
-                messages.info(request, 'New activation code sent to you email.')
-                return redirect(to='account_confirm')
+                # пробуем достать её
+                existing_email_user = User.objects.get(email=user_email)
+                # если имена не совпали и учётка активирована
+                if existing_email_user.username != username and existing_email_user.is_active:
+                    form = AccountCreationForm()
+                    messages.info(
+                        request,
+                        "Account with this email already exists.")
+                    context = {
+                        'reg_form': form,
+                    }
+                    return render(
+                        request,
+                        'accounts/register.html',
+                        context=context,
+                    )
+                # если имена не совпали, но учётка не активирована
+                elif existing_email_user.username != username and not existing_email_user.is_active:
+                    existing_email_user.username = username
+                    existing_email_user.save()
+                    non_activated_user_conf_code_mail.delay(existing_email_user.id)
+                    messages.info(
+                        request,
+                        "Looks like you've already tried to register here."
+                        "New activation code was sent to you email.")
+                    return redirect(to='account_confirm')
     else:
         form = AccountCreationForm()
 
