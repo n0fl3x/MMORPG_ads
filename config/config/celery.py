@@ -11,7 +11,7 @@ app.autodiscover_tasks()
 app.conf.beat_schedule = {
     'weekly_non_active_users_and_codes_clear': {
         'task': 'accounts.tasks.weekly_non_active_users_and_codes_clear',
-        'schedule': crontab(hour=18, minute=38, day_of_week='thursday'),
+        'schedule': crontab(hour=8, minute=0, day_of_week='monday'),
         'args': (),
     },
 }
