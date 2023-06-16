@@ -1,4 +1,4 @@
-### Итоговый проект SKillFactory по блоку модулей D (Django framework) - доска объявлений для фанатского MMORPG-сервера.
+### Django - сайт объявлений для фанатского MMORPG-сервера.
 
 ---
 
@@ -27,47 +27,47 @@ __Техническое задание:__
 1. Создаём директорию для проекта. Для этого можно воспользоваться
 терминалом Git Bash:
 
-![img.png](img.png)
+![img.png](help_imgs/img.png)
 
 
 2. Клонируем проект из удалённого репозитория на GitHub с помощью команды:
 
     > ___git clone https://github.com/n0fl3x/MMORPG_ads.git___
 
-![img_1.png](img_1.png)
+![img_1.png](help_imgs/img_1.png)
 
 
 3. Открываем проект с помощью IDE (PyCharm, Visual Studio Code, и т.п.)
 
-![img_2.png](img_2.png)
+![img_2.png](help_imgs/img_2.png)
 
 
 4. Открываем окно терминала и переходим в директорию проекта:
 
     > ___cd MMORPG_ads___
 
-![img_3.png](img_3.png)
+![img_3.png](help_imgs/img_3.png)
 
 
 5. Создаём виртуальное окружение для проекта:
 
     > ___py -m venv venv___
 
-![img_4.png](img_4.png)
+![img_4.png](help_imgs/img_4.png)
 
 
 6. Активируем виртуальное окружение:
 
    > ___venv\scripts\activate___
 
-![img_5.png](img_5.png)
+![img_5.png](help_imgs/img_5.png)
 
 
 7. Переходим в директорию config:
 
     > ___cd config___
 
-![img_6.png](img_6.png)
+![img_6.png](help_imgs/img_6.png)
 
 
 8. Устанавливаем необходимые для работы проекта зависимости
@@ -75,14 +75,14 @@ __Техническое задание:__
 
     > ___pip install -r requirements.txt___
 
-![img_7.png](img_7.png)
+![img_7.png](help_imgs/img_7.png)
 
-![img_8.png](img_8.png)
+![img_8.png](help_imgs/img_8.png)
 
 
 9. В директории проекта создаём файл .env:
 
-![img_9.png](img_9.png)
+![img_9.png](help_imgs/img_9.png)
 
 
 10. В .env файле необходимо вставить данные исходного проекта,
@@ -94,7 +94,7 @@ __Техническое задание:__
 - REDIS_KEY = <ключ-пароль для корректной обработки задач брокером Redis Cloud>
 - PORT = <номер порта для корректной обработки задач брокером Redis Cloud>
 
-![img_10.png](img_10.png)
+![img_10.png](help_imgs/img_10.png)
 
 
 11. Открываем 2 дополнительных окна терминала (т.е. всего их должно быть открыто три).
@@ -104,16 +104,16 @@ __Техническое задание:__
 
     > ___venv\scripts\activate___
 
-![img_11.png](img_11.png)
+![img_11.png](help_imgs/img_11.png)
 
-![img_12.png](img_12.png)
+![img_12.png](help_imgs/img_12.png)
 
 
 12. В первом окне терминала запускаем Django-сервер:
 
     > ___py manage.py runserver___
 
-![img_13.png](img_13.png)
+![img_13.png](help_imgs/img_13.png)
 
 
 13. Во втором окне терминала переходим в директорию config и
@@ -124,7 +124,7 @@ __Техническое задание:__
 
     > ___celery -A config worker -l info -P threads --pool=solo___
 
-![img_14.png](img_14.png)
+![img_14.png](help_imgs/img_14.png)
 
 
 14. В третьем окне терминала переходим в директорию config и
@@ -136,14 +136,14 @@ __Техническое задание:__
 
     > ___celery -A config beat -l info___
 
-![img_15.png](img_15.png)
+![img_15.png](help_imgs/img_15.png)
 
 
 8. переходим по ссылке:
 
    > http://127.0.0.1:8000/ads/
 
-![img_16.png](img_16.png)
+![img_16.png](help_imgs/img_16.png)
 
 
 Дальнейшее использование сайта должно быть интуитивно понятным.
